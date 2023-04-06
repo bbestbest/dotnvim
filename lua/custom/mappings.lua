@@ -35,7 +35,7 @@ M.disabled = {
 
     -- ["gD"] = "",
     -- ["gd"] = "",
-    -- ["K"] = "",
+    ["K"] = "",
     -- ["gi"] = "",
     -- ["<leader>ls"] = "",
     -- ["<leader>D"] = "",
@@ -77,6 +77,7 @@ M.general = {
     ["Y"] = { "yy", "yank current line" },
     ["<TAB>"] = { "gt", "next tab" },
     ["<S-TAB>"] = { "gT", "next tab" },
+    ["<C-c>"] = { "<C-w>c", "close tab" },
   },
 }
 
@@ -101,16 +102,16 @@ M.nvimtree = {
   },
 }
 
--- M.lsp = {
---   n = {
---     ["<Leader>lf"] = {
---       function()
---         vim.lsp.buf.format { async = true }
---       end,
---       "lsp formatting",
---     },
---   },
--- }
+M.lsp = {
+  n = {
+    ["<C-k>"] = {
+      function()
+        vim.lsp.buf.hover()
+      end,
+      "lsp hover",
+    },
+  },
+}
 
 M.tabufline = {
   n = {
@@ -139,7 +140,7 @@ M.tabufline = {
 
 M.comment = {
   n = {
-    ["<C-_>"] = {
+    ["<leader>/"] = {
       function()
         require("Comment.api").toggle.linewise.current()
       end,
@@ -148,7 +149,7 @@ M.comment = {
   },
 
   v = {
-    ["<C-_>"] = {
+    ["<leader>/"] = {
       "<ESC><cmd>lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>",
       "toggle comment",
     },
@@ -161,9 +162,48 @@ M.telescope = {
   },
 }
 
-M.finecmd = {
+-- M.finecmd = {
+--   n = {
+--     [":"] = { "<cmd>FineCmdline<CR>" },
+--   },
+-- }
+
+M.alpha = {
   n = {
-    [":"] = { "<cmd>FineCmdline<CR>" },
+    ["<leader>b"] = { "<cmd>Alpha<CR>" },
+  },
+}
+
+M.lsplines = {
+  n = {
+    ["<leader>ll"] = {
+      function()
+        require("lsp_lines").toggle()
+      end,
+      { desc = "Toggle lsp_lines" },
+    },
+  },
+}
+
+M.nvterm = {
+  t = {
+    -- toggle in terminal mode
+    ["<A-w>"] = {
+      function()
+        require("nvterm.terminal").toggle "image"
+      end,
+      "toggle image term",
+    },
+  },
+
+  n = {
+    -- toggle in normal mode
+    ["<A-w>"] = {
+      function()
+        require("nvterm.terminal").toggle "image"
+      end,
+      "toggle image term",
+    },
   },
 }
 

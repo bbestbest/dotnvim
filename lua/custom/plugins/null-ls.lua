@@ -12,7 +12,7 @@ local sources = {
   code_actions.eslint_d,
 
   formatting.deno_fmt,
-  formatting.prettierd,
+  formatting.prettier,
   formatting.stylua,
   formatting.shfmt,
 

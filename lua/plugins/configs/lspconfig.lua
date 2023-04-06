@@ -1,11 +1,11 @@
 local present, lspconfig = pcall(require, "lspconfig")
-local status, typescript = pcall(require, "typescript")
+local x, typescript = pcall(require, "typescript")
 
 if not present then
   return
 end
 
-if not status then
+if not x then
   return
 end
 
@@ -105,6 +105,32 @@ typescript.setup {
   },
 }
 
+lspconfig.lua_ls.setup {
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
+
+  settings = {
+    Lua = {
+      diagnostics = {
+        globals = { "vim" },
+      },
+      workspace = {
+        library = {
+          [vim.fn.expand "$VIMRUNTIME/lua"] = true,
+          [vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+        },
+        maxPreload = 100000,
+        preloadFileSize = 10000,
+      },
+    },
+  },
+}
+
+lspconfig.html.setup {
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
+}
+
 lspconfig.tsserver.setup {
   on_attach = M.on_attach,
   capabilities = M.capabilities,
@@ -149,6 +175,17 @@ lspconfig.eslint.setup {
     workingDirectory = {
       mode = "location",
     },
+  },
+}
+
+lspconfig.graphql.setup {
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
+  cmd = { "graphql-lsp", "server", "-m", "stream" },
+  filetypes = {
+    "graphql",
+    "typescriptreact",
+    "javascriptreact",
   },
 }
 

@@ -84,4 +84,26 @@ lspconfig.tailwindcss.setup {
   capabilities = M.capabilities,
 }
 
+lspconfig.graphql.setup {
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
+}
+
+-- Disable virtual_text since it's redundant due to lsp_lines.
+vim.diagnostic.config {
+  virtual_lines = { only_current_line = true },
+  virtual_text = false,
+}
+
+lspconfig.graphql.setup {
+  on_attach = M.on_attach,
+  capabilities = M.capabilities,
+  cmd = { "graphql-lsp", "server", "-m", "stream" },
+  filetypes = {
+    "graphql",
+    "typescriptreact",
+    "javascriptreact",
+  },
+}
+
 return M

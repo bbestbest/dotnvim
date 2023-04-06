@@ -5,22 +5,22 @@ if not present then
 end
 
 notify.setup {
+  background_colour = "Normal",
+  fps = 60,
+  icons = {
+    DEBUG = "",
+    ERROR = "",
+    INFO = "",
+    TRACE = "✎",
+    WARN = "",
+  },
+  level = -1,
+  minimum_width = 50,
+  render = "minimal",
   stages = "slide",
-  on_open = nil,
-  on_close = nil,
   timeout = 2000,
-  -- fps = 120,
-  render = "default",
-  -- background_colour = 000000,
-  -- minimum_width = 50,
-  level = "TRACE",
-  -- icons = {
-  --   ERROR = icons.diagnostics.Error,
-  --   WARN = icons.diagnostics.Warning,
-  --   INFO = icons.diagnostics.Information,
-  --   DEBUG = icons.ui.Bug,
-  --   TRACE = icons.ui.Pencil,
-  -- },
+  top_down = true,
+  -- on_open = function(win)
+  --   vim.api.nvim_win_set_config(win, { focusable = false })
+  -- end,
 }
-
-vim.notify = notify

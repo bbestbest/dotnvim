@@ -8,26 +8,37 @@ find_cmdline.setup {
   cmdline = {
     enable_keymaps = true,
     smart_history = true,
-    prompt = ": ",
+    prompt = "╰─> ",
   },
   popup = {
     position = {
-      row = "50%",
+      row = "6%",
       col = "50%",
     },
     size = {
-      height = "50px",
-      width = "20%",
+      width = "34%",
     },
     border = {
       text = {
-        top = "I WILL HAVE ORDER",
+        -- top = "   I WILL HAVE ORDER   ",
+        top = " Cmdline ",
         top_align = "center",
-        bottom = "𒆙  𒆙  𒆙  𒆙  𒆙  ",
+        -- bottom = "   𒆙  𒆙  𒆙  𒆙  𒆙  𒆙    ",
         bottom_align = "center",
       },
-      style = "rounded",
+      -- style = "rounded",
+      style = {
+        top_left = "╭",
+        top = "─",
+        top_right = "╮",
+        left = "│",
+        right = "│",
+        bottom_left = "╰",
+        bottom = "─",
+        bottom_right = "╯",
+      },
     },
+    relative = "editor",
     win_options = {
       winhighlight = "Normal:Normal,FloatBorder:FloatBorder",
     },

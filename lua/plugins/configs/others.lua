@@ -50,6 +50,14 @@ M.blankline = function()
     show_first_indent_level = false,
     show_current_context = true,
     show_current_context_start = true,
+    -- char_highlight_list = {
+    --   "IndentBlanklineIndent1",
+    --   "IndentBlanklineIndent2",
+    --   "IndentBlanklineIndent3",
+    --   "IndentBlanklineIndent4",
+    --   "IndentBlanklineIndent5",
+    --   "IndentBlanklineIndent6",
+    -- },
   }
 
   options = load_override(options, "lukas-reineke/indent-blankline.nvim")
@@ -146,9 +154,9 @@ M.gitsigns = function()
       topdelete = { hl = "DiffDelete", text = "‾", numhl = "GitSignsDeleteNr" },
       changedelete = { hl = "DiffChangeDelete", text = "~", numhl = "GitSignsChangeNr" },
     },
-    on_attach = function (bufnr)
+    on_attach = function(bufnr)
       utils.load_mappings("gitsigns", { buffer = bufnr })
-    end
+    end,
   }
 
   options = load_override(options, "lewis6991/gitsigns.nvim")
