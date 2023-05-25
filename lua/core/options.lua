@@ -3,7 +3,8 @@ local g = vim.g
 local config = require("core.utils").load_config()
 
 g.nvchad_theme = config.ui.theme
-g.toggle_theme_icon = "   "
+-- g.toggle_theme_icon = "   "
+g.toggle_theme_icon = ""
 g.transparency = config.ui.transparency
 g.theme_switcher_loaded = false
 
