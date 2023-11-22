@@ -1,13 +1,3 @@
-local present, telescope = pcall(require, "telescope")
-
-if not present then
-  return
-end
-
-vim.g.theme_switcher_loaded = true
-
-require("base46").load_highlight "telescope"
-
 local options = {
   defaults = {
     vimgrep_arguments = {
@@ -59,27 +49,15 @@ local options = {
     },
   },
 
+  extensions_list = { "themes", "terms", "fzf" },
   extensions = {
-    media_files = {
-      -- filetypes whitelist
-      -- defaults to {"png", "jpg", "mp4", "webm", "pdf"}
-      filetypes = { "png", "webp", "jpg", "jpeg" },
-      -- find command (defaults to `fd`)
-      -- find_cmd = "rg",
+    fzf = {
+      fuzzy = true,
+      override_generic_sorter = true,
+      override_file_sorter = true,
+      case_mode = "smart_case",
     },
   },
-
-  extensions_list = { "themes", "terms", "media_files" },
 }
 
--- check for any override
-options = require("core.utils").load_override(options, "nvim-telescope/telescope.nvim")
-
-telescope.setup(options)
-
--- load extensions
-pcall(function()
-  for _, ext in ipairs(options.extensions_list) do
-    telescope.load_extension(ext)
-  end
-end)
+return options

@@ -4,7 +4,7 @@ local capabilities = require("plugins.configs.lspconfig").capabilities
 local lspconfig = require "lspconfig"
 
 -- if you just want default config for the servers then put them in a table
-local servers = { "html", "cssls", "tsserver" }
+local servers = { "html", "cssls", "tsserver", "clangd", "tailwindcss" }
 
 for _, lsp in ipairs(servers) do
   lspconfig[lsp].setup {
@@ -13,5 +13,11 @@ for _, lsp in ipairs(servers) do
   }
 end
 
--- 
+-- Disable virtual_text since it's redundant due to lsp_lines.
+vim.diagnostic.config {
+  virtual_lines = { only_current_line = true },
+  virtual_text = false,
+}
+
+--
 -- lspconfig.pyright.setup { blabla}

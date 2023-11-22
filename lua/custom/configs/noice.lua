@@ -5,6 +5,7 @@ if not present then
 end
 
 noice.setup {
+  cmdline = {},
   lsp = {
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
     -- override = {

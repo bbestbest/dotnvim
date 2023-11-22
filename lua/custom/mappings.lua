@@ -1,16 +1,7 @@
+---@type MappingsTable
 local M = {}
 
 M.disabled = {
-  i = {
-    ["<C-b>"] = "",
-    ["<C-e>"] = "",
-
-    ["<C-h>"] = "",
-    ["<C-l>"] = "",
-    ["<C-j>"] = "",
-    ["<C-k>"] = "",
-  },
-
   n = {
     ["<C-s>"] = "",
     ["<C-c>"] = "",
@@ -20,6 +11,7 @@ M.disabled = {
     ["<C-j>"] = "",
     ["<C-k>"] = "",
 
+    ["<leader>v"] = "",
     ["<leader>n"] = "",
     ["<leader>rn"] = "",
     ["<leader>uu"] = "",
@@ -31,30 +23,10 @@ M.disabled = {
     ["<leader>b"] = "",
     ["<C-n>"] = "",
 
-    ["<leader>/"] = "",
+    ["<TAB>"] = "",
+    ["<S-TAB>"] = "",
 
-    -- ["gD"] = "",
-    -- ["gd"] = "",
     ["K"] = "",
-    -- ["gi"] = "",
-    -- ["<leader>ls"] = "",
-    -- ["<leader>D"] = "",
-    -- ["<leader>ra"] = "",
-    -- ["<leader>ca"] = "",
-    -- ["gr"] = "",
-    -- ["<leader>f"] = "",
-    -- ["[d"] = "",
-    -- ["d]"] = "",
-    -- ["<leader>q"] = "",
-    -- ["<leader>fm"] = "",
-    -- ["<leader>wa"] = "",
-    -- ["<leader>wr"] = "",
-    -- ["<leader>wl"] = "",
-    --
-    -- ["<leader>th"] = "",
-    -- ["<leader>cm"] = "",
-    -- ["<leader>gt"] = "",
-
     ["<leader>x"] = "",
   },
 
@@ -78,6 +50,7 @@ M.general = {
     ["<TAB>"] = { "gt", "next tab" },
     ["<S-TAB>"] = { "gT", "next tab" },
     ["<C-c>"] = { "<C-w>c", "close tab" },
+    ["<leader><leader>s"] = { ":noa w<CR>", "close tab" },
   },
 }
 
@@ -117,21 +90,21 @@ M.tabufline = {
   n = {
     ["<C-l>"] = {
       function()
-        require("nvchad_ui.tabufline").tabuflineNext()
+        require("nvchad.tabufline").tabuflineNext()
       end,
       "goto next buffer",
     },
 
     ["<C-h>"] = {
       function()
-        require("nvchad_ui.tabufline").tabuflinePrev()
+        require("nvchad.tabufline").tabuflinePrev()
       end,
       "goto prev buffer",
     },
 
     ["<C-x>"] = {
       function()
-        require("nvchad_ui.tabufline").close_buffer()
+        require("nvchad.tabufline").close_buffer()
       end,
       "close buffer",
     },
@@ -180,7 +153,7 @@ M.lsplines = {
       function()
         require("lsp_lines").toggle()
       end,
-      { desc = "Toggle lsp_lines" },
+       "Toggle lsp_lines" ,
     },
   },
 }
@@ -208,3 +181,4 @@ M.nvterm = {
 }
 
 return M
+
