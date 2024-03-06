@@ -6,7 +6,8 @@ local lualine = require "lualine"
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-  bg       = '#202328',
+  -- bg       = '#202328',
+  bg       = '#111826',
   fg       = '#bbc2cf',
   yellow   = '#ECBE7B',
   cyan     = '#008080',
@@ -43,8 +44,10 @@ local config = {
       -- We are going to use lualine_c an lualine_x as left and
       -- right section. Both are highlighted by c theme .  So we
       -- are just setting default looks o statusline
-      normal = { c = { fg = colors.fg, bg = colors.bg } },
-      inactive = { c = { fg = colors.fg, bg = colors.bg } },
+      -- normal = { c = { fg = colors.fg, bg = colors.bg } },
+      normal = { c = { fg = colors.fg } },
+      -- inactive = { c = { fg = colors.fg, bg = colors.bg } },
+      inactive = { c = { fg = colors.fg } },
     },
   },
   sections = {
@@ -82,38 +85,39 @@ ins_left {
   function()
     return "▊"
   end,
-  color = { fg = colors.blue }, -- Sets highlighting of component
+  color = { fg = colors.blue },      -- Sets highlighting of component
   padding = { left = 0, right = 1 }, -- We don't need space before this
 }
 
 ins_left {
   -- mode component
   function()
-    return ""
+    -- return ""
+    return "✮⋆˙"
   end,
   color = function()
     -- auto change color according to neovims mode
     local mode_color = {
-      n = colors.red,
-      i = colors.green,
+      n = colors.cyan,
+      i = colors.fg,
       v = colors.blue,
       [""] = colors.blue,
       V = colors.blue,
-      c = colors.magenta,
-      no = colors.red,
-      s = colors.orange,
-      S = colors.orange,
-      [""] = colors.orange,
-      ic = colors.yellow,
-      R = colors.violet,
-      Rv = colors.violet,
-      cv = colors.red,
-      ce = colors.red,
+      c = colors.fg,
+      no = colors.cyan,
+      s = colors.blue,
+      S = colors.blue,
+      [""] = colors.blue,
+      ic = colors.cyan,
+      R = colors.fg,
+      Rv = colors.fg,
+      cv = colors.blue,
+      ce = colors.blue,
       r = colors.cyan,
       rm = colors.cyan,
       ["r?"] = colors.cyan,
-      ["!"] = colors.red,
-      t = colors.red,
+      ["!"] = colors.fg,
+      t = colors.fg,
     }
     return { fg = mode_color[vim.fn.mode()] }
   end,
@@ -121,15 +125,21 @@ ins_left {
 }
 
 ins_left {
-  -- filesize component
-  "filesize",
-  cond = conditions.buffer_not_empty,
+  "branch",
+  icon = "",
+  color = { fg = colors.violet, gui = "bold" },
 }
 
 ins_left {
   "filename",
   cond = conditions.buffer_not_empty,
   color = { fg = colors.magenta, gui = "bold" },
+}
+
+ins_left {
+  -- filesize component
+  "filesize",
+  cond = conditions.buffer_not_empty,
 }
 
 ins_left { "location" }
@@ -147,15 +157,21 @@ ins_left {
   },
 }
 
--- Insert mid section. You can make any number of sections in neovim :)
--- for lualine it's any number greater then 2
 ins_left {
-  function()
-    return "%="
-  end,
+  require("noice").api.statusline.mode.get,
+  cond = require("noice").api.statusline.mode.has,
+  color = { fg = "#ff9e64" },
 }
 
-ins_left {
+-- Insert mid section. You can make any number of sections in neovim :)
+-- for lualine it's any number greater then 2
+-- ins_left {
+--   function()
+--     return "%="
+--   end,
+-- }
+
+ins_right {
   -- Lsp server name .
   function()
     local msg = "No Active Lsp"
@@ -178,24 +194,24 @@ ins_left {
 
 -- Add components to right sections
 ins_right {
-  "o:encoding", -- option component same as &encoding in viml
+  "o:encoding",       -- option component same as &encoding in viml
   fmt = string.upper, -- I'm not sure why it's upper case either ;)
   cond = conditions.hide_in_width,
-  color = { fg = colors.green, gui = "bold" },
+  color = { fg = colors.fg, gui = "bold" },
 }
 
 ins_right {
   "fileformat",
   fmt = string.upper,
   icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
-  color = { fg = colors.green, gui = "bold" },
+  color = { fg = colors.fg, gui = "bold" },
 }
 
-ins_right {
-  "branch",
-  icon = "",
-  color = { fg = colors.violet, gui = "bold" },
-}
+-- ins_right {
+--   "branch",
+--   icon = "",
+--   color = { fg = colors.violet, gui = "bold" },
+-- }
 
 ins_right {
   "diff",
@@ -217,13 +233,13 @@ ins_right {
   padding = { left = 1 },
 }
 
-ins_right {
-  "cdate",
-}
+-- ins_right {
+--   "cdate",
+-- }
 
-ins_right {
-  "ctime",
-}
+-- ins_right {
+--   "ctime",
+-- }
 
 -- Now don't forget to initialize lualine
 lualine.setup(config)

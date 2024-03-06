@@ -8,7 +8,7 @@ local plugins = {
     dependencies = {
       -- format & linting
       {
-        "jose-elias-alvarez/null-ls.nvim",
+        "nvimtools/none-ls.nvim",
         config = function()
           require "custom.configs.null-ls"
         end,
@@ -25,15 +25,42 @@ local plugins = {
     "williamboman/mason.nvim",
     opts = overrides.mason,
   },
-
   {
     "nvim-treesitter/nvim-treesitter",
     opts = overrides.treesitter,
   },
-
   {
     "nvim-tree/nvim-tree.lua",
     opts = overrides.nvimtree,
+  },
+
+  {
+    "nvim-telescope/telescope.nvim",
+    opts = overrides.telescope,
+  },
+  {
+    "nvim-telescope/telescope-ui-select.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+  },
+  {
+    "debugloop/telescope-undo.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
+  },
+  {
+    "dharmx/telescope-media.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+  },
+
+  {
+    "NvChad/nvterm",
+    opts = overrides.nvterm,
   },
 
   -- Install a plugin
@@ -61,23 +88,26 @@ local plugins = {
       require "custom.configs.alpha"
     end,
   },
-  -- {
-  --   "nvim-telescope/telescope.nvim",
-  --   config = function()
-  --     require "custom.configs.telescope"
-  --   end,
-  -- },
   {
     "rcarriga/nvim-notify",
+    lazy = false,
     config = function()
       require "custom.configs.notify"
     end,
   },
   {
-    "folke/noice.nvim",
+    "mrded/nvim-lsp-notify",
     lazy = false,
+    config = function()
+      require "custom.configs.lsp-notify"
+    end,
+  },
+  { "folke/which-key.nvim", enabled = false },
+  {
+    "folke/noice.nvim",
     dependencies = {
       { "MunifTanjim/nui.nvim" },
+      { "rcarriga/nvim-notify" },
     },
     config = function()
       require "custom.configs.noice"
@@ -87,17 +117,16 @@ local plugins = {
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
     lazy = false,
     config = function()
-      require "custom.configs.lsp_lines"
+      require "custom.configs.lsp-lines"
     end,
   },
-  { "tpope/vim-surround", lazy = false },
-  { "folke/which-key.nvim", enabled = false },
-  -- { "itchyny/vim-cursorword", lazy = false },
-  -- { "terryma/vim-multiple-cursors", lazy = false },
-  { "jinh0/eyeliner.nvim", lazy = false },
+  { "tpope/vim-surround",   lazy = false },
+  { "jinh0/eyeliner.nvim",  lazy = false },
+
   {
     "nvim-lualine/lualine.nvim",
     lazy = false,
+    enabled = true,
     config = function()
       require "custom.configs.lualine"
     end,
@@ -109,20 +138,13 @@ local plugins = {
       require "custom.configs.lualine-time"
     end,
   },
-  -- {
-  --   "NStefan002/speedtyper.nvim",
-  --   enabled = false,
-  --   lazy = false,
-  -- },
-  {
-    "kessejones/git-blame-line.nvim",
-    lazy = false,
-    enabled = false,
-    config = function()
-      require "custom.configs.git-blame-line"
-    end,
-  },
 
+  { "weilbith/nvim-code-action-menu", enabled = false, cmd = "CodeActionMenu" },
+
+  {
+    "itchyny/calendar.vim",
+    cmd = "Calendar",
+  },
   {
     "FabijanZulj/blame.nvim",
     lazy = false,
@@ -132,53 +154,50 @@ local plugins = {
   },
 
   {
-    "karb94/neoscroll.nvim",
-    enabled = false,
-    config = function()
-      require "custom.configs.neoscroll"
-    end,
+    "kdheepak/lazygit.nvim",
+    event = "VeryLazy",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-telescope/telescope.nvim" },
   },
-
   {
-    "gen740/SmoothCursor.nvim",
+    "crnvl96/lazydocker.nvim",
+    event = "VeryLazy",
+    opts = overrides.lazydocker,
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+  },
+  {
+    "gorbit99/codewindow.nvim",
     enabled = false,
     config = function()
-      require "custom.configs.smoothcursor"
+      require "custom.configs.codewindow"
     end,
   },
-  -- {
-  --   "edluffy/hologram.nvim",
-  --   config = function()
-  --     require("hologram").setup {
-  --       auto_display = true,
-  --     }
-  --   end,
-  -- },
-  --
-  -- {
-  --   "giusgad/pets.nvim",
-  --   lazy = false,
-  --   dependencies = {
-  --     { "edluffy/hologram.nvim", "MunifTanjim/nui.nvim" },
-  --   },
-  --   config = function()
-  --     require "custom.configs.pets"
-  --   end,
-  -- },
-
-  -- To make a plugin not be loaded
-  -- {
-  --   "NvChad/nvim-colorizer.lua",
-  --   enabled = false
-  -- },
-
-  -- All NvChad plugins are lazy-loaded by default
-  -- For a plugin to be loaded, you will need to set either `ft`, `cmd`, `keys`, `event`, or set `lazy = false`
-  -- If you want a plugin to load on startup, add `lazy = false` to a plugin spec, for example
-  -- {
-  --   "mg979/vim-visual-multi",
-  --   lazy = false,
-  -- }
+  {
+    "toppair/peek.nvim",
+    event = { "VeryLazy" },
+    build = "deno task --quiet build:fast",
+    config = function()
+      require("peek").setup()
+      -- refer to `configuration to change defaults`
+      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+    end,
+  },
+  {
+    "folke/todo-comments.nvim",
+    lazy = false,
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require "custom.configs.todo-comments"
+    end,
+  },
+  {
+    "edluffy/hologram.nvim",
+    config = function()
+      require "custom.configs.hologram"
+    end,
+  }
 }
 
 return plugins

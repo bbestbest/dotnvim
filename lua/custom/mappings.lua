@@ -16,6 +16,7 @@ M.disabled = {
     ["<leader>rn"] = "",
     ["<leader>uu"] = "",
     ["<leader>tt"] = "",
+    ["<leader>e"] = "",
 
     ["<Up>"] = "",
     ["<Down>"] = "",
@@ -23,15 +24,19 @@ M.disabled = {
     ["<leader>b"] = "",
     ["<C-n>"] = "",
 
-    ["<TAB>"] = "",
-    ["<S-TAB>"] = "",
-
     ["K"] = "",
+
+    ["<tab>"] = "",
+    ["<S-tab>"] = "",
     ["<leader>x"] = "",
   },
 
   v = {
     ["<leader>/"] = "",
+  },
+
+  i = {
+    ["jj"] = "",
   },
 }
 
@@ -47,10 +52,18 @@ M.switchwindow = {
 M.general = {
   n = {
     ["Y"] = { "yy", "yank current line" },
-    ["<TAB>"] = { "gt", "next tab" },
-    ["<S-TAB>"] = { "gT", "next tab" },
     ["<C-c>"] = { "<C-w>c", "close tab" },
-    ["<leader><leader>s"] = { ":noa w<CR>", "close tab" },
+    ["<leader><leader>s"] = { ":noa w<CR>", "save without format" },
+
+    ["<tab>"] = {
+      ":tabn<CR>",
+      "Goto next tab",
+    },
+
+    ["<S-tab>"] = {
+      ":tabp<CR>",
+      "Goto previous tab",
+    },
   },
 }
 
@@ -59,7 +72,7 @@ M.splitwindow = {
     ["<leader>sv"] = { "<C-w>v", "split window vertically" },
     ["<leader>sh"] = { "<C-w>s", "split window horizontally" },
     ["<leader>se"] = { "<C-w>=", "make split windows equal width & height" },
-    ["<leader>sx"] = { ":close<CR>", "make split windows equal width & height" },
+    ["<leader>sx"] = { "<cmd>close<CR>", "make split windows equal width & height" },
   },
 }
 
@@ -71,7 +84,7 @@ M.linenumber = {
 
 M.nvimtree = {
   n = {
-    ["<C-b>"] = { "<cmd> NvimTreeToggle <CR>", "toggle nvimtree" },
+    ["<leader>e"] = { "<cmd>NvimTreeToggle<CR>", "toggle nvimtree" },
   },
 }
 
@@ -111,6 +124,12 @@ M.tabufline = {
   },
 }
 
+M.blame = {
+  n = {
+    ["<leader>g"] = { "<cmd>ToggleBlame virtual<CR>", "toggle blame" },
+  },
+}
+
 M.comment = {
   n = {
     ["<leader>/"] = {
@@ -131,15 +150,12 @@ M.comment = {
 
 M.telescope = {
   n = {
-    ["<leader>fi"] = { "<cmd> Telescope media_files <CR>", "find images" },
+    ["<leader>fi"] = { "<cmd>Telescope media<CR>", "find images" },
+    ["<leader>rg"] = { "<cmd>Telescope registers<CR>", "find registers" },
+    ["<leader>cs"] = { "<cmd>Telescope commands<CR>", "find commands" },
+    ["<leader>td"] = { "<cmd>Telescope todo-comments<CR>", "find todo comments" },
   },
 }
-
--- M.finecmd = {
---   n = {
---     [":"] = { "<cmd>FineCmdline<CR>" },
---   },
--- }
 
 M.alpha = {
   n = {
@@ -153,7 +169,7 @@ M.lsplines = {
       function()
         require("lsp_lines").toggle()
       end,
-       "Toggle lsp_lines" ,
+      "Toggle lsp_lines",
     },
   },
 }
@@ -180,5 +196,23 @@ M.nvterm = {
   },
 }
 
-return M
+M.lazy = {
+  n = {
+    ["<Leader>lg"] = {
+      "<cmd>LazyGit<CR>",
+    },
+    ["<Leader>ld"] = {
+      "<cmd>LazyDocker<CR>",
+    },
+  },
+}
 
+-- M.minimap = {
+--   n = {
+--     ["<Leader>m"] = {
+--       "<cmd>MinimapToggle<CR>",
+--     },
+--   },
+-- }
+
+return M

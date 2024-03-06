@@ -8,5 +8,3 @@ opt.listchars:append "eol:↴"
 opt.swapfile = false
 
 g.toggle_theme_icon = ""
-
-

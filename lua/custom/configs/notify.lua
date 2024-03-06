@@ -5,7 +5,7 @@ if not present then
 end
 
 notify.setup {
-  background_colour = "Normal",
+  background_colour = "#000000",
   fps = 60,
   icons = {
     DEBUG = "",
@@ -15,12 +15,9 @@ notify.setup {
     WARN = "",
   },
   level = -1,
-  minimum_width = 50,
-  render = "minimal",
-  stages = "slide",
-  timeout = 2000,
+  max_width = 100,
+  render = "default",
+  stages = "fade",
+  timeout = 1000,
   top_down = true,
-  -- on_open = function(win)
-  --   vim.api.nvim_win_set_config(win, { focusable = false })
-  -- end,
 }

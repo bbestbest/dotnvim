@@ -5,7 +5,13 @@ if not present then
 end
 
 noice.setup {
-  cmdline = {},
+  cmdline = {
+    format = {
+      cmdline = { title = "I will have order", pattern = "^:", icon = "", lang = "vim" },
+      search_down = { kind = "search", pattern = "^/", icon = "", lang = "regex" },
+      search_up = { kind = "search", pattern = "^%?", icon = "", lang = "regex" },
+    },
+  },
   lsp = {
     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
     -- override = {
@@ -13,6 +19,9 @@ noice.setup {
     --   ["vim.lsp.util.stylize_markdown"] = false,
     --   ["cmp.entry.get_documentation"] = false,
     -- },
+    progress = {
+      enabled = false,
+    },
     hover = {
       enabled = false,
     },
@@ -31,10 +40,46 @@ noice.setup {
   },
   -- you can enable a preset for easier configuration
   presets = {
-    bottom_search = false, -- use a classic bottom cmdline for search
-    command_palette = true, -- position the cmdline and popupmenu together
+    bottom_search = false,        -- use a classic bottom cmdline for search
+    command_palette = true,       -- position the cmdline and popupmenu together
     long_message_to_split = true, -- long messages will be sent to a split
-    inc_rename = false, -- enables an input dialog for inc-rename.nvim
-    lsp_doc_border = false, -- add a border to hover docs and signature help
+    inc_rename = false,           -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = false,       -- add a border to hover docs and signature help
+  },
+  popupmenu = { enabled = false },
+  -- routes = {
+  --   {
+  --     view = "notify",
+  --     filter = { event = "msg_showmode" },
+  --   },
+  --   {
+  --     filter = {
+  --       error = true,
+  --     },
+  --     opts = { skip = true },
+  --   },
+  --   {
+  --     view = "split",
+  --     filter = { event = "msg_show", min_height = 20 },
+  --   },
+  -- },
+  views = {
+    cmdline_popup = {
+      border = {
+        style = { "╭", "", "╮", "", "╯", "", "╰", "" },
+        -- style = { "X", "", "X", "", "X", "", "X", "" },
+        padding = { 1, 2 },
+      },
+      position = "50%",
+      filter_options = {},
+      -- win_options = {
+      --   winhighlight = "NormalFloat:NormalFloat,FloatBorder:FloatBorder",
+      -- },
+    },
+    popupmenu = {
+      border = {
+        style = "none",
+      },
+    },
   },
 }

@@ -5,5 +5,6 @@ if not present then
 end
 
 blame.setup {
-  virtual_style = "virtual",
+  virtual_style = "right_align",
+
 }
