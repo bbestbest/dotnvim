@@ -10,8 +10,8 @@ require("notify").setup {
   },
   level = -1,
   max_width = 100,
-  render = "default",
-  stages = "fade",
-  timeout = 1000,
+  render = "minimal",
+  stages = "static",
+  timeout = 5000,
   top_down = true,
 }

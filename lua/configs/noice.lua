@@ -7,28 +7,35 @@ require("noice").setup {
     },
   },
   lsp = {
-    enabled = false,
-    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
-    -- override = {
-    --   ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
-    --   ["vim.lsp.util.stylize_markdown"] = false,
-    --   ["cmp.entry.get_documentation"] = false,
-    -- },
-    -- progress = {
-    --   enabled = false,
-    -- },
-    -- hover = {
-    --   enabled = false,
-    -- },
-    -- documentation = {
-    --   enabled = false,
-    -- },
-    -- signature = {
-    --   enabled = true,
-    -- },
-    -- message = {
-    --   enabled = false,
-    -- },
+    progress = {
+      enabled = false,
+      -- Lsp Progress is formatted using the builtins for lsp_progress. See config.format.builtin
+      -- See the section on formatting for more details on how to customize.
+      --- @type NoiceFormat|string
+      format = "lsp_progress",
+      --- @type NoiceFormat|string
+      format_done = "lsp_progress_done",
+      throttle = 300 / 10, -- frequency to update lsp progress message
+      view = "virtualtext",
+      -- view = "mini",
+    },
+    hover = {
+      enabled = true,
+      silent = true,
+    },
+    signature = {
+      enabled = false,
+    },
+  },
+  messages = {
+    -- NOTE: If you enable messages, then the cmdline is enabled automatically.
+    -- This is a current Neovim limitation.
+    enabled = true, -- enables the Noice messages UI
+    view = "notify", -- default view for messages
+    view_error = "notify", -- view for errors
+    view_warn = "notify", -- view for warnings
+    view_history = "messages", -- view for :messages
+    view_search = "virtualtext", -- view for search count messages. Set to `false` to disable
   },
   health = {
     checker = false, -- Disable if you don't want health checks to run
@@ -36,28 +43,18 @@ require("noice").setup {
   -- you can enable a preset for easier configuration
   presets = {
     bottom_search = false, -- use a classic bottom cmdline for search
-    command_palette = true, -- position the cmdline and popupmenu together
+    command_palette = false, -- position the cmdline and popupmenu together
     long_message_to_split = true, -- long messages will be sent to a split
     inc_rename = false, -- enables an input dialog for inc-rename.nvim
-    lsp_doc_border = false, -- add a border to hover docs and signature help
+    lsp_doc_border = true, -- add a border to hover docs and signature help
   },
-  popupmenu = { enabled = false },
-  -- routes = {
-  -- {
-  --   view = "notify",
-  --   filter = { event = "msg_showmode" },
-  -- },
-  -- {
-  --   filter = {
-  --     error = true,
-  --   },
-  --   opts = { skip = true },
-  -- },
-  -- {
-  --   view = "split",
-  --   filter = { event = "msg_show", min_height = 20 },
-  -- },
-  -- },
+  popupmenu = { enabled = true },
+  routes = {
+    filter = {
+      error = true,
+      opts = { skip = true },
+    },
+  },
   views = {
     cmdline_popup = {
       border = {

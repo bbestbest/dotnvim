@@ -1,29 +1,27 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-
--- local is_alpha_available = pcall(require, "alpha")
-
--- if is_alpha_available then
 local group_name = augroup("alpha_settings", { clear = true })
-autocmd("User", {
-  desc = "Disable status and tablines for alpha",
-  group = group_name,
-  pattern = "AlphaReady",
-  callback = function()
-    local prev_showtabline = vim.opt.showtabline
-    local prev_status = vim.opt.laststatus
-    vim.opt.laststatus = 0
-    vim.opt.showtabline = 0
-    vim.opt_local.winbar = nil
-    autocmd("BufUnload", {
-      pattern = "<buffer>",
-      callback = function()
-        vim.opt.laststatus = prev_status
-        vim.opt.showtabline = prev_showtabline
-      end,
-    })
-  end,
-})
+
+-- autocmd("User", {
+--   desc = "Disable status and tablines for alpha",
+--   group = group_name,
+--   pattern = "AlphaReady",
+--   callback = function()
+--     local prev_showtabline = vim.opt.showtabline
+--     local prev_status = vim.opt.laststatus
+--     vim.opt.laststatus = 0
+--     vim.opt.showtabline = 0
+--     vim.opt_local.winbar = nil
+--     autocmd("BufUnload", {
+--       pattern = "<buffer>",
+--       callback = function()
+--         vim.opt.laststatus = prev_status
+--         vim.opt.showtabline = prev_showtabline
+--       end,
+--     })
+--   end,
+-- })
+
 autocmd("VimEnter", {
   desc = "Start Alpha when vim is opened with no arguments",
   group = group_name,
@@ -44,4 +42,12 @@ autocmd("VimEnter", {
     end
   end,
 })
--- end
+
+autocmd("BufDelete", {
+  callback = function()
+    local bufs = vim.t.bufs
+    if #bufs == 1 and vim.api.nvim_buf_get_name(bufs[1]) == "" then
+      vim.cmd "Alpha"
+    end
+  end,
+})

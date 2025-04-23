@@ -1,24 +1,45 @@
 return {
+  -- {
+  --   "nvchad/ui",
+  --   config = function()
+  --     require "nvchad"
+  --   end,
+  -- },
+
   {
-    "NvChad/ui",
-    event = "BufRead",
-    config = function()
-      require "nvchad"
-      vim.opt.statusline = ""
+    "nvchad/base46",
+    lazy = true,
+    build = function()
+      require("base46").load_all_highlights()
     end,
   },
 
+  { "nvchad/volt", lazy = true },
+  { "nvchad/minty", cmd = { "Shades", "Huefy" } },
+
   {
     "folke/which-key.nvim",
-    -- event = "VeryLazy",
+    event = "VeryLazy",
     enabled = false,
+  },
+
+  {
+    "nvchad/showkeys",
+    event = "VeryLazy",
+    cmd = "ShowkeysToggle",
+    opts = { timeout = 1, maxKeys = 5, position = "top-center" },
   },
 
   {
     "nvim-telescope/telescope.nvim",
     opts = require "options.telescope",
     dependencies = {
-      { "nvim-telescope/telescope-ui-select.nvim" },
+      {
+        "bbestbest/project.nvim",
+        config = function()
+          require "configs.project"
+        end,
+      },
     },
   },
 
@@ -26,23 +47,15 @@ return {
     "nvim-tree/nvim-tree.lua",
     opts = require "options.nvimtree",
     dependencies = {
-      "b0o/nvim-tree-preview.lua",
+      { "b0o/nvim-tree-preview.lua", enabled = false },
     },
   },
 
   {
     "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
-        "lua-language-server",
-        "stylua",
-        "html-lsp",
-        "css-lsp",
-        "eslint-lsp",
-        "prettier",
-        "tailwindcss-language-server",
-        "typescript-language-server",
-      },
+    event = "VeryLazy",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
     },
   },
 
@@ -55,18 +68,16 @@ return {
   },
 
   {
-    "neovim/nvim-lspconfig",
-    config = function()
-      require "configs.lspconfig"
-    end,
-  },
-  {
     "zeioth/garbage-day.nvim",
-    enabled = true,
-    dependencies = "neovim/nvim-lspconfig",
     event = "VeryLazy",
-    opts = {
-      aggressive_mode = true,
+    dependencies = {
+      {
+        "neovim/nvim-lspconfig",
+        event = "VeryLazy",
+        config = function()
+          require "configs.lspconfig"
+        end,
+      },
     },
   },
 
@@ -81,15 +92,9 @@ return {
 
   {
     "folke/noice.nvim",
-    event = "VimEnter",
+    lazy = false,
     dependencies = {
       { "MunifTanjim/nui.nvim" },
-      {
-        "rcarriga/nvim-notify",
-        config = function()
-          require "configs.notify"
-        end,
-      },
     },
     config = function()
       require "configs.noice"
@@ -98,7 +103,9 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
-    event = "BufRead",
+    -- commit = "1517caa8fff05e4b4999857319d3b0609a7f57fa",
+    lazy = false,
+    enabled = false,
     config = function()
       require "configs.lualine"
     end,
@@ -106,6 +113,7 @@ return {
 
   {
     "akinsho/toggleterm.nvim",
+    enabled = false,
     event = "BufRead",
     config = function()
       require "configs.toggleterm"
@@ -122,9 +130,13 @@ return {
     end,
   },
 
-  { "weilbith/nvim-code-action-menu", event = "BufRead" },
-
-  { "jinh0/eyeliner.nvim", event = "BufRead" },
+  {
+    "jinh0/eyeliner.nvim",
+    event = "BufRead",
+    config = function()
+      require "configs.eyeliner"
+    end,
+  },
 
   {
     "FabijanZulj/blame.nvim",
@@ -139,10 +151,7 @@ return {
     build = "deno task --quiet build:fast",
     event = "BufRead",
     config = function()
-      require("peek").setup()
-      -- refer to `configuration to change defaults`
-      vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
-      vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+      require "configs.peek"
     end,
   },
 
@@ -150,15 +159,19 @@ return {
     "folke/trouble.nvim",
     event = "BufRead",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    opts = require "options.trouble",
+    config = function()
+      require "configs.trouble"
+    end,
   },
 
   {
     "blumaa/octopus.nvim",
+    enabled = false,
   },
 
   {
     "yutkat/wb-only-current-line.nvim",
+    enabled = false,
     event = "BufRead",
   },
 
@@ -182,12 +195,192 @@ return {
 
   {
     "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
+    enabled = false,
     event = "BufRead",
-    config = true,
   },
 
   {
     "numToStr/Comment.nvim",
     event = "BufRead",
+  },
+
+  {
+    "3rd/image.nvim",
+    enabled = false,
+    event = "VeryLazy",
+    config = function()
+      require "configs.image"
+    end,
+  },
+
+  {
+    "p5quared/apple-music.nvim",
+    enabled = false,
+    dependencies = { "nvim-telescope/telescope.nvim" },
+    config = true,
+    keys = require "configs.apple-music.keys",
+  },
+
+  {
+    "rcarriga/nvim-dap-ui",
+    dependencies = {
+      {
+        {
+          "Cliffback/netcoredbg-macOS-arm64.nvim",
+          dependencies = {
+            "mfussenegger/nvim-dap",
+            config = function()
+              dofile(vim.g.base46_cache .. "dap")
+              require "configs.nvim-dap"
+            end,
+          },
+          config = function()
+            require "configs.netcoredbg"
+          end,
+        },
+      },
+      "nvim-neotest/nvim-nio",
+    },
+    config = function()
+      require "configs.nvim-dap-ui"
+    end,
+  },
+
+  {
+    "jbyuki/one-small-step-for-vimkind",
+    enabled = false,
+  },
+
+  { "stevearc/dressing.nvim", enabled = false, lazy = false },
+
+  {
+    "EL-MASTOR/bufferlist.nvim",
+    enabled = false,
+    event = "BufRead",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    cmd = "BufferList",
+  },
+
+  {
+    "mikavilpas/tsugit.nvim",
+    keys = {
+      {
+        "<leader><leader>lg",
+        function()
+          require("tsugit").toggle()
+        end,
+        { silent = true, desc = "toggle lazygit" },
+      },
+    },
+    opts = {
+      keys = {
+        force_quit = "<c-c>",
+      },
+    },
+  },
+
+  {
+    "danilamihailov/beacon.nvim",
+    enabled = false,
+    lazy = false,
+    config = function()
+      require "configs.beacon"
+    end,
+  },
+
+  {
+    "rachartier/tiny-glimmer.nvim",
+    enabled = false,
+    event = "VeryLazy",
+    config = function()
+      require "configs.tiny-glimmer"
+    end,
+  },
+
+  {
+    "you-fail-me/git-drift.nvim",
+    enabled = false,
+    event = "BufRead",
+  },
+
+  {
+    "Enigama/miss.nvim",
+    enabled = false,
+    event = "VeryLazy",
+  },
+
+  {
+    "beargruug/skipper.nvim",
+    enabled = false,
+    event = "VeryLazy",
+  },
+
+  {
+    "jackMort/ChatGPT.nvim",
+    enabled = false,
+    event = "VeryLazy",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require("chatgpt").setup {
+        openai_params = {
+          model = "gpt-3.5-turbo",
+          frequency_penalty = 0,
+          presence_penalty = 0,
+          max_tokens = 4095,
+          temperature = 0.2,
+          top_p = 0.1,
+          n = 1,
+        },
+      }
+    end,
+  },
+
+  {
+    "folke/snacks.nvim",
+    priority = 1000,
+    lazy = false,
+    opts = {
+      image = { enabled = true },
+      notifier = { enabled = true },
+      input = { enabled = true },
+    },
+    keys = {
+      {
+        "<leader>n",
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = "Notification History",
+      },
+      {
+        "<leader>un",
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = "Dismiss All Notifications",
+      },
+      {
+        "<leader>N",
+        desc = "Neovim News",
+        function()
+          Snacks.win {
+            file = vim.api.nvim_get_runtime_file("doc/news.txt", false)[1],
+            width = 0.6,
+            height = 0.6,
+            wo = {
+              spell = false,
+              wrap = false,
+              signcolumn = "yes",
+              statuscolumn = " ",
+              conceallevel = 3,
+            },
+          }
+        end,
+      },
+    },
   },
 }

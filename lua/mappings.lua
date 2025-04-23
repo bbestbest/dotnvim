@@ -3,11 +3,23 @@ local map = vim.keymap.set
 -- General
 map("n", "<ESC>", "<cmd>noh<CR>", { desc = "Yank current line" })
 map("n", "Y", "yy", { desc = "Yank current line" })
+map("n", "<leader>s", "<cmd>w<CR>", { desc = "Save" })
 map("n", "<leader><leader>s", "<cmd>noa w<CR>", { desc = "Save without format" })
 map("n", "<leader>O", "O<Esc>j", { desc = "Newline Above" })
 map("n", "<leader>o", "o<Esc>k", { desc = "Newline Under" })
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "Save File" })
 map("n", "<leader>r", "<cmd>edit!<CR>", { desc = "Reload File" })
+map("n", "<leader><leader>e", "<cmd>e .env<CR>", { desc = "Edit .env" })
+map("n", "<leader><leader>p", "<cmd>e package.json<CR>", { desc = "Edit package.json" })
+
+-- NvChad
+map("n", "<leader>th", function()
+  require("nvchad.themes").open {
+    -- icon = "", -- optional
+    style = "bordered", -- optional! compact/flat/bordered
+    border = true,
+  }
+end, { desc = "Nvchad themes" })
 
 -- Don't copy the replaced text after pasting in visual mode
 -- https://vim.fandom.com/wiki/Replace_a_word_with_yanked_text#Alternative_mapping_for_paste
@@ -28,6 +40,12 @@ map("n", "<leader>xv", "<C-w>v", { desc = "Split Buffer Veritical" })
 map("n", "<leader>xh", "<C-w>s", { desc = "Split Buffer Horizontal" })
 
 -- Tabufline
+map("n", "<C-j>", function()
+  require("nvchad.tabufline").move_buf(-1)
+end, { desc = "Move Tabufline To Left" })
+map("n", "<C-k>", function()
+  require("nvchad.tabufline").move_buf(1)
+end, { desc = "Move Tabufline To Right" })
 map("n", "<C-l>", function()
   require("nvchad.tabufline").next()
 end, { desc = "Next Tabufline" })
@@ -37,12 +55,29 @@ end, { desc = "Prev Tabufline" })
 map("n", "<C-x>", function()
   require("nvchad.tabufline").close_buffer()
 end, { desc = "Close Buffer" })
+map("n", "<C-\\><C-x>", function()
+  require("nvchad.tabufline").closeAllBufs(false)
+end, { desc = "Close All Buffers Exclude Current" })
+for i = 1, 9, 1 do
+  map("n", string.format("<leader>%s", i), function()
+    vim.api.nvim_set_current_buf(vim.t.bufs[i])
+  end)
+end
 
 -- NvimTree
 map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Focus NvimTree" })
+-- Neo-tree
+-- map("n", "<leader>e", "<cmd>Neotree<CR>", { desc = "Focus NvimTree" })
 
 -- Telescope
 map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Live grep" })
+-- map("n", "<leader>fw", function()
+--   require("telescope.builtin").live_grep {
+--     additional_args = function()
+--       return { "--hidden", "--glob", "*.env" }
+--     end,
+--   }
+-- end, { desc = "Telescope Live grep" })
 map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope Find buffers" })
 map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Telescope Help page" })
 map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope Find oldfiles" })
@@ -50,7 +85,7 @@ map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = 
 map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "Telescope Git commits" })
 map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Telescope Git status" })
 map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "Telescope Pick hidden term" })
-map("n", "<leader>th", "<cmd>Telescope themes<CR>", { desc = "Telescope Nvchad themes" })
+-- map("n", "<leader>th", "<cmd>Telescope themes<CR>", { desc = "Telescope Nvchad themes" })
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
 map("n", "<leader>gr", "<cmd>Telescope lsp_references<cr>", { desc = "Telescope Find references" })
 map(
@@ -59,29 +94,26 @@ map(
   "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
   { desc = "Telescope Find all files" }
 )
+map("n", "<leader>da", "<cmd>Telescope diagnostics<CR>", { desc = "Telescope Find all files" })
 
 -- Terminal
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
 map({ "n", "t" }, "<C-\\><C-v>", function()
-  require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm", size = 0.5 }
+  require("nvchad.term").toggle { pos = "vsp", id = "vtoggleTerm" }
 end, { desc = "Terminal Toggleable vertical term" })
 map({ "n", "t" }, "<C-\\><C-h>", function()
-  require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm", size = 0.3 }
+  require("nvchad.term").toggle { pos = "sp", id = "htoggleTerm" }
 end, { desc = "Terminal New horizontal term" })
 map({ "n", "t" }, "<C-\\><C-i>", function()
   require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
 end, { desc = "Terminal Toggle Floating term" })
--- map({ "n" }, "<A-i>", function()
---   require("toggleterm.terminal").Terminal:new({ direction = "float", cmd = "tmux", hidden = true }):toggle()
--- end, { desc = "Toggle Term" })
-
--- ToggleTerm
-map({ "n", "t" }, "<leader><leader>lg", function()
-  require("toggleterm.terminal").Terminal:new({ direction = "float", cmd = "lazygit", hidden = true }):toggle()
-end, { desc = "Toggle Lazygit" })
-map({ "n", "t" }, "<leader><leader>ld", function()
-  require("toggleterm.terminal").Terminal:new({ direction = "float", cmd = "lazydocker", hidden = true }):toggle()
-end, { desc = "Toggle Laydocker" })
+map({ "n", "t" }, "<C-\\><C-f>", function()
+  require("nvchad.term").toggle {
+    pos = "vsp",
+    id = "claudeTerm",
+    cmd = "claude",
+  }
+end, { desc = "Terminal Claude term" })
 
 -- Whichkey
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "Whichkey all keymaps" })
@@ -123,28 +155,62 @@ end, { desc = "Toggle Deleted" })
 map("n", "<leader>df", function()
   vim.diagnostic.open_float()
 end)
--- map("n", "K", function()
---   vim.lsp.buf.hover()
--- end, { desc = "LSP Hover" })
--- map("n", "<C-k>", function()
---   vim.lsp.buf.hover()
--- end, { desc = "LSP Hover" })
+map("n", "<leader>dn", function()
+  vim.diagnostic.goto_next()
+end)
+map("n", "<leader>dp", function()
+  vim.diagnostic.goto_prev()
+end)
+map("n", "<leader>ca", function()
+  vim.lsp.buf.code_action()
+end, { desc = "LSP Code Action" })
+
+local cmp = require "cmp"
+local cmp_enabled = true
+
+map("n", "<leader>cp", function()
+  cmp_enabled = not cmp_enabled
+  cmp.setup {
+    enabled = cmp_enabled,
+  }
+
+  vim.notify("CMP enabled: " .. tostring(cmp_enabled), vim.log.levels.INFO)
+end, { desc = "Toggle nvim-cmp completion" })
 
 -- LSP Lines
 map("n", "<leader>ll", function()
-  require("lsp_lines").toggle()
-end, { desc = "Toggle LSP Lines" })
+  local current = vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config {
+    virtual_lines = not current,
+  }
+
+  vim.notify("LSP Lines enabled: " .. tostring(not current), vim.log.levels.INFO)
+end, { desc = "Toggle virtual_lines" })
 
 -- Stupid Octupus
-map("n", "<leader>on", function()
-  require("octopus").spawn()
-end, {})
-map("n", "<leader>off", function()
-  require("octopus").removeLastOctopus()
-end, {})
-map("n", "<leader>ofa", function()
-  require("octopus").removeAllOctopuses()
-end, {})
+-- map("n", "<leader>on", function()
+--   require("octopus").spawn()
+-- end, {})
+-- map("n", "<leader>off", function()
+--   require("octopus").removeLastOctopus()
+-- end, {})
+-- map("n", "<leader>ofa", function()
+--   require("octopus").removeAllOctopuses()
+-- end, {})
 
 -- Screenkey
-map("n", "<leader>sk", "<cmd>Screenkey<CR>", { desc = "Toggle Screenkey" })
+-- map("n", "<leader>sk", "<cmd>Screenkey<CR>", { desc = "Toggle Screenkey" })
+
+-- Dap
+-- map("n", "<leader><leader>db", function()
+--   require("dapui").toggle()
+-- end, { desc = "Toggle DAP Debugger" })
+
+-- map("n", "<leader>b", function()
+--   if #vim.api.nvim_list_bufs() > 0 then
+--     pcall(vim.cmd.Bufferlist)
+--   end
+-- end, { desc = "Toggle Bufflist" })
+
+-- Skipper
+-- map("n", "<leader>cf", "<cmd>:ShowFunctionsWindow<CR>", { desc = "Open Skipper" })

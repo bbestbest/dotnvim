@@ -7,7 +7,11 @@ capabilities.workspace.workspaceFolders = true
 capabilities.workspace.didChangeWatchedFiles.dynamicRegistration = true
 
 local lspconfig = require "lspconfig"
-local servers = { "html", "cssls", "lua_ls", "jsonls", "tailwindcss", "prismals" }
+local server_list = {
+  one = { "html", "cssls", "lua_ls", "jsonls", "prismals", "rust_analyzer", "biome" },
+  two = { "html", "cssls", "lua_ls", "jsonls", "prismals", "rust_analyzer" },
+}
+local servers = server_list.one
 
 -- lsps with default config
 for _, lsp in ipairs(servers) do
@@ -29,6 +33,13 @@ local get_vue_server_path = function()
   return M
 end
 
+lspconfig["tailwindcss"].setup {
+  on_attach = on_attach,
+  on_init = on_init,
+  capabilities = capabilities,
+  filetypes = { "javascriptreact", "typescriptreact", "vue" },
+}
+
 lspconfig["volar"].setup {
   on_attach = on_attach,
   on_init = on_init,
@@ -40,7 +51,21 @@ lspconfig["volar"].setup {
   },
 }
 
-lspconfig["tsserver"].setup {
+lspconfig["yamlls"].setup {
+  on_attach = on_attach,
+  on_init = on_init,
+  capabilities = capabilities,
+  settings = {
+    yaml = {
+      schemas = {
+        ["https://json.schemastore.org/github-workflow.json"] = "/.github/workflows/*",
+        ["https://raw.githubusercontent.com/instrumenta/kubernetes-json-schema/master/v1.18.0-standalone-strict/all.json"] = "/*.k8s.yaml",
+      },
+    },
+  },
+}
+
+lspconfig["ts_ls"].setup {
   on_attach = on_attach,
   on_init = on_init,
   capabilities = capabilities,
@@ -60,7 +85,6 @@ lspconfig["tsserver"].setup {
   },
 }
 
--- lint
 lspconfig["eslint"].setup {
   on_init = on_init,
   capabilities = capabilities,
@@ -73,6 +97,46 @@ lspconfig["eslint"].setup {
   end,
 }
 
+lspconfig["docker_compose_language_service"].setup {}
+
+lspconfig["rust_analyzer"].setup {
+  settings = {
+    ["rust-analyzer"] = {
+      diagnostics = {
+        enable = false,
+      },
+    },
+  },
+}
+
+local function set_filetype(pattern, filetype)
+  vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+    pattern = pattern,
+    command = "set filetype=" .. filetype,
+  })
+end
+
+set_filetype({ "docker-compose.yml" }, "yaml.docker-compose")
+
+lspconfig["dockerls"].setup {
+  on_attach = on_attach,
+  on_init = on_init,
+  capabilities = capabilities,
+  settings = {
+    docker = {
+      languageserver = {
+        formatter = {
+          ignoreMultilineInstructions = true,
+        },
+      },
+    },
+  },
+}
+
+lspconfig["csharp_ls"].setup {}
+
+lspconfig["marksman"].setup {}
+
 -- override vim
 vim.diagnostic.config {
   virtual_text = false,
@@ -82,16 +146,16 @@ vim.diagnostic.config {
   underline = true,
 }
 
-vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
-  config = config or {}
-  config.focus_id = ctx.method
-  if not (result and result.contents) then
-    return
-  end
-  local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
-  markdown_lines = vim.lsp.util.trim_empty_lines(markdown_lines)
-  if vim.tbl_isempty(markdown_lines) then
-    return
-  end
-  return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
-end
+-- vim.lsp.handlers["textDocument/hover"] = function(_, result, ctx, config)
+--   config = config or {}
+--   config.focus_id = ctx.method
+--   if not (result and result.contents) then
+--     return
+--   end
+--   local markdown_lines = vim.lsp.util.convert_input_to_markdown_lines(result.contents)
+--   markdown_lines = vim.split(markdown_lines, "\n", { trimempty = true })
+--   if vim.tbl_isempty(markdown_lines) then
+--     return
+--   end
+--   return vim.lsp.util.open_floating_preview(markdown_lines, "markdown", config)
+-- end

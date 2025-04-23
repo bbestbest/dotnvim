@@ -1,15 +1,29 @@
 local M = {}
 
 M.override = {
-  Comment = {},
-  ["@comment"] = {},
+  Folded = {
+    fg = "#A2A2B7",
+  },
+  TbBufOff = {
+    fg = "#A2A2B7",
+    -- fg = "#FFC552",
+  },
+  Comment = {
+    fg = "#A2A2B7",
+  },
+  ["@comment"] = {
+    fg = "#A2A2B7",
+  },
   LineNr = {
-    -- fg = "#5de4c7",
-    fg = "#f97451",
+    fg = "#A2A2B7",
+    -- fg = "#FFC552",
+    -- fg = "#F97451",
   },
   Delimiter = {},
   Visual = {
-    fg = "#add7ff",
+    fg = "#DFDFE5",
+    bg = "#6F6F72",
+    -- fg = "#ADD7FF",
     -- bg = "#303340",
   },
   CursorLine = {},
@@ -17,7 +31,7 @@ M.override = {
 
 M.add = {
   Alpha = {
-    -- fg = "#f97451",
+    -- fg = "#F97451",
     -- fg = "#FFFFFF",
     fg = "#FFD966",
     bold = true,

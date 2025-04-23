@@ -4,16 +4,16 @@ local WIDTH_RATIO = 0.8
 local options = {
   filters = {
     dotfiles = false,
-    exclude = { vim.fn.stdpath "config" .. "/lua/custom" },
   },
   disable_netrw = true,
   hijack_netrw = true,
   hijack_cursor = true,
   hijack_unnamed_buffer_when_opening = false,
-  update_cwd = true,
+  sync_root_with_cwd = true,
+  respect_buf_cwd = true,
   update_focused_file = {
     enable = true,
-    update_cwd = false,
+    update_root = true,
   },
   view = {
     relativenumber = true,
@@ -44,7 +44,7 @@ local options = {
   },
   git = {
     enable = false,
-    ignore = true,
+    -- ignore = true,
   },
   filesystem_watchers = {
     enable = true,
@@ -61,11 +61,9 @@ local options = {
     highlight_git = true,
     highlight_opened_files = "none",
     root_folder_label = false,
-
     indent_markers = {
       enable = false,
     },
-
     icons = {
       show = {
         file = true,
@@ -73,7 +71,6 @@ local options = {
         folder_arrow = true,
         git = true,
       },
-
       glyphs = {
         default = "",
         symlink = "",
