@@ -6,13 +6,13 @@ return {
   --   end,
   -- },
 
-  {
-    "nvchad/base46",
-    lazy = true,
-    build = function()
-      require("base46").load_all_highlights()
-    end,
-  },
+  -- {
+  --   "nvchad/base46",
+  --   lazy = true,
+  --   build = function()
+  --     require("base46").load_all_highlights()
+  --   end,
+  -- },
 
   { "nvchad/volt", lazy = true },
   { "nvchad/minty", cmd = { "Shades", "Huefy" } },
@@ -382,5 +382,15 @@ return {
         end,
       },
     },
+  },
+
+  {
+    "greggh/claude-code.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    config = function()
+      require "configs.claude-code"
+    end,
   },
 }

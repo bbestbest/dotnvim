@@ -1,18 +1,17 @@
 local highlights = require "highlights"
 
----@type ChadrcConfig
 local M = {
   base46 = {
-    theme = "poimandres",
+    theme = "falcon",
     transparency = true,
-    -- hl_override = highlights.override,
-    -- hl_add = highlights.add,
+    hl_override = highlights.override,
+    hl_add = highlights.add,
     integrations = { "trouble", "dap" },
   },
   ui = {
-    -- telescope = { style = "borderless" },
+    telescope = { style = "borderless" },
     -- statusline = {
-    --   enabled = false,
+    --   -- enabled = false,
     --   theme = "default",
     --   separator_style = "block",
     -- },

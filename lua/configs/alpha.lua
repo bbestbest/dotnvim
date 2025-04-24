@@ -9,6 +9,7 @@ local function button(sc, txt, keybind)
     width = 36,
     align_shortcut = "right",
     hl = "AlphaButton",
+    -- hl = "Constant",
   }
 
   if keybind then
@@ -44,7 +45,38 @@ local LOGO = {
   -- { "honkai_star_rail.png" },
 }
 
-require "alpha.term"
+-- Save this in your init.lua or a plugin file
+
+-- Table to keep track of previous and current directories
+local dir_history = {
+  initial = vim.fn.getcwd(), -- Capture startup dir once
+  current = vim.fn.getcwd(), -- This will change via SmartCD
+}
+
+function SmartCD(new_dir)
+  local cwd = vim.fn.getcwd()
+  if cwd ~= new_dir then
+    dir_history.current = cwd
+    vim.cmd("cd " .. new_dir)
+    print("Changed to: " .. new_dir)
+  else
+    print("Already in: " .. new_dir)
+  end
+end
+
+function TogglePWD()
+  local cwd = vim.fn.getcwd()
+  -- if cwd ~= dir_history.initial then
+  dir_history.current = cwd
+  vim.cmd("cd " .. dir_history.initial)
+  print("Returned to initial dir: " .. dir_history.initial)
+  -- else
+  --   vim.cmd("cd " .. dir_history.current)
+  --   print("Returned to last dir: " .. dir_history.current)
+end
+-- end
+
+-- require "alpha.term"
 
 local info = LOGO[1]
 local LOGO_WIDTH = 100
@@ -57,7 +89,8 @@ local options = {
       val = require("configs.alpha-ascii").bbest,
       opts = {
         position = "center",
-        hl = "Alpha",
+        -- hl = "Alpha",
+        hl = "@symbol",
       },
     },
     -- image = {
@@ -110,8 +143,9 @@ local options = {
       button("w", " Find Word  ", ":Telescope live_grep<CR>"),
       button("m", "󰃀 Bookmarks  ", ":Telescope marks<CR>"),
       -- button("h", "󰃉 Themes  ", ":Telescope themes<CR>"),
-      button("s", " Settings", ":cd $CONFIG/nvim<CR>"),
-      button("c", " Config Settings", ":cd $CONFIG<CR>"),
+      button("s", " Settings", ":lua SmartCD(vim.fn.expand('$CONFIG') .. '/nvim')<CR>"),
+      button("c", " Config Settings", ":lua SmartCD(vim.fn.expand('$CONFIG'))<CR>"),
+      button("p", " Previous Folder", ":lua TogglePWD()<CR>"),
       -- button("h", " Terminal Settings", ":e $CONFIG/kitty/kitty.conf<CR>"),
       -- button("q", "󰅚 Exit", "<cmd>qa<CR>"),
     },
@@ -124,7 +158,8 @@ local options = {
     val = os.date "Today is %A, %b %D",
     opts = {
       position = "center",
-      hl = "Alpha",
+      -- hl = "Alpha",
+      hl = "Constant",
     },
   },
   info_startup = {
@@ -132,7 +167,8 @@ local options = {
     val = "",
     opts = {
       position = "center",
-      hl = "Alpha",
+      -- hl = "Alpha",
+      hl = "Constant",
     },
   },
   dir = {
@@ -140,7 +176,8 @@ local options = {
     val = "",
     opts = {
       position = "center",
-      hl = "Alpha",
+      -- hl = "Alpha",
+      hl = "Constant",
     },
   },
 }
@@ -207,6 +244,7 @@ require("alpha").setup {
             options.dir.val = ""
             options.logo.ascii.val = require("configs.alpha-ascii").config
           else
+            options.logo.ascii.val = require("configs.alpha-ascii").bbest
             options.dir.val = "Current Folder : " .. dir
           end
           pcall(vim.cmd.AlphaRedraw)

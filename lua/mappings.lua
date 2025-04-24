@@ -65,7 +65,8 @@ for i = 1, 9, 1 do
 end
 
 -- NvimTree
-map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Focus NvimTree" })
+-- map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Focus NvimTree" })
+map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
 -- Neo-tree
 -- map("n", "<leader>e", "<cmd>Neotree<CR>", { desc = "Focus NvimTree" })
 
@@ -107,13 +108,18 @@ end, { desc = "Terminal New horizontal term" })
 map({ "n", "t" }, "<C-\\><C-i>", function()
   require("nvchad.term").toggle { pos = "float", id = "floatTerm" }
 end, { desc = "Terminal Toggle Floating term" })
+
 map({ "n", "t" }, "<C-\\><C-f>", function()
-  require("nvchad.term").toggle {
-    pos = "vsp",
-    id = "claudeTerm",
-    cmd = "claude",
-  }
-end, { desc = "Terminal Claude term" })
+  require("claude-code").toggle()
+end, { desc = "Toggle Claude Code" })
+
+-- map({ "n", "t" }, "<C-\\><C-f>", function()
+--   require("nvchad.term").toggle {
+--     pos = "vsp",
+--     id = "claudeTerm",
+--     cmd = "claude",
+--   }
+-- end, { desc = "Terminal Claude term" })
 
 -- Whichkey
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "Whichkey all keymaps" })

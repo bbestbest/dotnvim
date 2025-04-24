@@ -1,6 +1,15 @@
 local M = {}
 
 M.override = {
+  -- TabLine = {
+  --   bg = "#303340",
+  -- },
+  -- TabLineFill = {
+  --   bg = "#303340",
+  -- },
+  -- TbFill = {
+  --   bg = "#303340",
+  -- },
   Folded = {
     fg = "#A2A2B7",
   },
