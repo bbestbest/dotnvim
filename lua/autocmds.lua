@@ -1,30 +1,15 @@
 local augroup = vim.api.nvim_create_augroup
 local autocmd = vim.api.nvim_create_autocmd
-local group_name = augroup("alpha_settings", { clear = true })
 
--- autocmd("User", {
---   desc = "Disable status and tablines for alpha",
---   group = group_name,
---   pattern = "AlphaReady",
---   callback = function()
---     local prev_showtabline = vim.opt.showtabline
---     local prev_status = vim.opt.laststatus
---     vim.opt.laststatus = 0
---     vim.opt.showtabline = 0
---     vim.opt_local.winbar = nil
---     autocmd("BufUnload", {
---       pattern = "<buffer>",
---       callback = function()
---         vim.opt.laststatus = prev_status
---         vim.opt.showtabline = prev_showtabline
---       end,
---     })
---   end,
--- })
+-- Helper function to create a named group
+local function GroupName(name)
+  return augroup(name, { clear = true })
+end
 
+-- Start Alpha when vim is opened with no arguments
 autocmd("VimEnter", {
   desc = "Start Alpha when vim is opened with no arguments",
-  group = group_name,
+  group = GroupName "alpha_settings",
   callback = function()
     local should_skip = false
     if vim.fn.argc() > 0 or vim.fn.line2byte "$" ~= -1 or not vim.o.modifiable then
@@ -43,11 +28,20 @@ autocmd("VimEnter", {
   end,
 })
 
+-- Return to Alpha when the last buffer is closed
 autocmd("BufDelete", {
+  group = GroupName "alpha_return",
   callback = function()
     local bufs = vim.t.bufs
     if #bufs == 1 and vim.api.nvim_buf_get_name(bufs[1]) == "" then
       vim.cmd "Alpha"
     end
   end,
+})
+
+-- Disable automatic commenting on newlines
+autocmd("BufEnter", {
+  group = GroupName "disable_auto_comment",
+  pattern = "*",
+  command = "set formatoptions-=cro",
 })

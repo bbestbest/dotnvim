@@ -16,8 +16,9 @@ local M = {
     --   separator_style = "block",
     -- },
     tabufline = {
-      lazyload = true,
+      lazyload = false,
       order = { "treeOffset", "buffers", "tabs" },
+      modules = {},
     },
   },
   term = {
@@ -46,7 +47,6 @@ local M = {
       "prettier",
       "prisma-language-server",
       "rust-analyzer",
-      "rustfmt",
       "stylua",
       "css-lsp",
       "tailwindcss-language-server",

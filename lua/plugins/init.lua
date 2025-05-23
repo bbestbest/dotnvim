@@ -1,21 +1,14 @@
 return {
-  -- {
-  --   "nvchad/ui",
-  --   config = function()
-  --     require "nvchad"
-  --   end,
-  -- },
-
-  -- {
-  --   "nvchad/base46",
-  --   lazy = true,
-  --   build = function()
-  --     require("base46").load_all_highlights()
-  --   end,
-  -- },
-
   { "nvchad/volt", lazy = true },
   { "nvchad/minty", cmd = { "Shades", "Huefy" } },
+  {
+    "nvchad/base46",
+    lazy = true,
+    build = function()
+      require("base46").load_all_highlights()
+    end,
+  },
+  { import = "nvchad.blink.lazyspec" },
 
   {
     "folke/which-key.nvim",
@@ -27,20 +20,7 @@ return {
     "nvchad/showkeys",
     event = "VeryLazy",
     cmd = "ShowkeysToggle",
-    opts = { timeout = 1, maxKeys = 5, position = "top-center" },
-  },
-
-  {
-    "nvim-telescope/telescope.nvim",
-    opts = require "options.telescope",
-    dependencies = {
-      {
-        "bbestbest/project.nvim",
-        config = function()
-          require "configs.project"
-        end,
-      },
-    },
+    opts = { timeout = 1, maxKeys = 5, position = "bottom-center" },
   },
 
   {
@@ -52,11 +32,31 @@ return {
   },
 
   {
+    "nvim-telescope/telescope.nvim",
+    enabled = false,
+    event = "VeryLazy",
+    opts = require "options.telescope",
+    dependencies = {
+      {
+        "bbestbest/project.nvim",
+        enabled = false,
+        config = function()
+          require "configs.project"
+        end,
+      },
+    },
+  },
+
+  {
+    "ibhagwan/fzf-lua",
+    event = "VeryLazy",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    opts = require "options.fzf",
+  },
+
+  {
     "williamboman/mason.nvim",
     event = "VeryLazy",
-    dependencies = {
-      "nvim-telescope/telescope.nvim",
-    },
   },
 
   {
@@ -84,7 +84,6 @@ return {
   {
     "goolord/alpha-nvim",
     cmd = "Alpha",
-
     config = function()
       require "configs.alpha"
     end,
@@ -92,7 +91,7 @@ return {
 
   {
     "folke/noice.nvim",
-    lazy = false,
+    event = "VeryLazy",
     dependencies = {
       { "MunifTanjim/nui.nvim" },
     },
@@ -103,7 +102,6 @@ return {
 
   {
     "nvim-lualine/lualine.nvim",
-    -- commit = "1517caa8fff05e4b4999857319d3b0609a7f57fa",
     lazy = false,
     enabled = false,
     config = function()
@@ -149,7 +147,7 @@ return {
   {
     "toppair/peek.nvim",
     build = "deno task --quiet build:fast",
-    event = "BufRead",
+    event = "VeryLazy",
     config = function()
       require "configs.peek"
     end,
@@ -157,6 +155,7 @@ return {
 
   {
     "folke/trouble.nvim",
+    enabled = false,
     event = "BufRead",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
@@ -177,6 +176,7 @@ return {
 
   {
     "NStefan002/screenkey.nvim",
+    enabled = false,
     version = "*",
     event = "BufReadPre",
     cmd = "Screenkey",
@@ -194,12 +194,6 @@ return {
   },
 
   {
-    "https://git.sr.ht/~whynothugo/lsp_lines.nvim",
-    enabled = false,
-    event = "BufRead",
-  },
-
-  {
     "numToStr/Comment.nvim",
     event = "BufRead",
   },
@@ -213,16 +207,17 @@ return {
     end,
   },
 
-  {
-    "p5quared/apple-music.nvim",
-    enabled = false,
-    dependencies = { "nvim-telescope/telescope.nvim" },
-    config = true,
-    keys = require "configs.apple-music.keys",
-  },
+  -- {
+  --   "p5quared/apple-music.nvim",
+  --   enabled = false,
+  --   dependencies = { "nvim-telescope/telescope.nvim" },
+  --   config = true,
+  --   keys = require "configs.apple-music.keys",
+  -- },
 
   {
     "rcarriga/nvim-dap-ui",
+    enabled = false,
     dependencies = {
       {
         {
@@ -251,8 +246,6 @@ return {
     enabled = false,
   },
 
-  { "stevearc/dressing.nvim", enabled = false, lazy = false },
-
   {
     "EL-MASTOR/bufferlist.nvim",
     enabled = false,
@@ -263,15 +256,7 @@ return {
 
   {
     "mikavilpas/tsugit.nvim",
-    keys = {
-      {
-        "<leader><leader>lg",
-        function()
-          require("tsugit").toggle()
-        end,
-        { silent = true, desc = "toggle lazygit" },
-      },
-    },
+    event = "VeryLazy",
     opts = {
       keys = {
         force_quit = "<c-c>",
@@ -282,7 +267,7 @@ return {
   {
     "danilamihailov/beacon.nvim",
     enabled = false,
-    lazy = false,
+    event = "VeryLazy",
     config = function()
       require "configs.beacon"
     end,
@@ -322,7 +307,7 @@ return {
     dependencies = {
       "MunifTanjim/nui.nvim",
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
+      -- "nvim-telescope/telescope.nvim",
     },
     config = function()
       require("chatgpt").setup {
@@ -341,10 +326,12 @@ return {
 
   {
     "folke/snacks.nvim",
+    event = "VimEnter",
     priority = 1000,
-    lazy = false,
     opts = {
-      image = { enabled = true },
+      image = {
+        enabled = true,
+      },
       notifier = { enabled = true },
       input = { enabled = true },
     },
@@ -376,7 +363,7 @@ return {
               wrap = false,
               signcolumn = "yes",
               statuscolumn = " ",
-              conceallevel = 3,
+              conceallevel = 0,
             },
           }
         end,

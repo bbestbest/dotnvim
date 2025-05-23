@@ -22,16 +22,16 @@ for _, lsp in ipairs(servers) do
   }
 end
 
-local get_vue_server_path = function()
-  local mason_registry = require "mason-registry"
-  local get_package_path = function(server)
-    return mason_registry.get_package(server):get_install_path()
-  end
-  local M = {}
-  M.typescript = get_package_path "vue-language-server" .. "/node_modules/@vue/language-server"
-  M.valor = get_package_path "vue-language-server" .. "/node_modules/typescript/lib"
-  return M
-end
+-- local get_vue_server_path = function()
+--   local mason_registry = require "mason-registry"
+--   local get_package_path = function(server)
+--     return mason_registry.get_package(server):get_install_path()
+--   end
+--   local M = {}
+--   M.typescript = get_package_path "vue-language-server" .. "/node_modules/@vue/language-server"
+--   M.valor = get_package_path "vue-language-server" .. "/node_modules/typescript/lib"
+--   return M
+-- end
 
 lspconfig["tailwindcss"].setup {
   on_attach = on_attach,
@@ -40,16 +40,16 @@ lspconfig["tailwindcss"].setup {
   filetypes = { "javascriptreact", "typescriptreact", "vue" },
 }
 
-lspconfig["volar"].setup {
-  on_attach = on_attach,
-  on_init = on_init,
-  capabilities = capabilities,
-  init_options = {
-    typescript = {
-      tsdk = get_vue_server_path().valor,
-    },
-  },
-}
+-- lspconfig["volar"].setup {
+--   on_attach = on_attach,
+--   on_init = on_init,
+--   capabilities = capabilities,
+--   init_options = {
+--     typescript = {
+--       tsdk = get_vue_server_path().valor,
+--     },
+--   },
+-- }
 
 lspconfig["yamlls"].setup {
   on_attach = on_attach,
@@ -69,15 +69,15 @@ lspconfig["ts_ls"].setup {
   on_attach = on_attach,
   on_init = on_init,
   capabilities = capabilities,
-  init_options = {
-    plugins = {
-      {
-        name = "@vue/typescript-plugin",
-        location = get_vue_server_path().typescript,
-        languages = { "vue" },
-      },
-    },
-  },
+  -- init_options = {
+  --   plugins = {
+  --     {
+  --       name = "@vue/typescript-plugin",
+  --       location = get_vue_server_path().typescript,
+  --       languages = { "vue" },
+  --     },
+  --   },
+  -- },
   -- add vue to filetypes
   filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
   settings = {

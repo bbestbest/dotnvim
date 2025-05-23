@@ -137,17 +137,19 @@ local options = {
     type = "group",
     val = {
       -- button("n", " New File  ", ":ene <BAR> startinsert <CR>"),
-      button("f", " Find Git File  ", ":Telescope find_files<CR>"),
-      button("a", " Find All File  ", ":Telescope find_files follow=true no_ignore=true hidden=true<CR>"),
-      button("o", " Recent File  ", ":Telescope oldfiles<CR>"),
-      button("w", " Find Word  ", ":Telescope live_grep<CR>"),
-      button("m", "󰃀 Bookmarks  ", ":Telescope marks<CR>"),
+      -- button("f", " Find Git File  ", ":Telescope find_files<CR>"),
+      -- button("a", " Find All File  ", ":Telescope find_files follow=true no_ignore=true hidden=true<CR>"),
+      -- button("o", " Recent File  ", ":Telescope oldfiles<CR>"),
+      -- button("w", " Find Word  ", ":Telescope live_grep<CR>"),
+      -- button("m", "󰃀 Bookmarks  ", ":Telescope marks<CR>"),
       -- button("h", "󰃉 Themes  ", ":Telescope themes<CR>"),
+      button("f", " Find File  ", ":FzfLua files<CR>"),
+      button("o", " Recent File  ", ":FzfLua oldfiles<CR>"),
+      button("w", " Find Word  ", ":FzfLua live_grep<CR>"),
       button("s", " Settings", ":lua SmartCD(vim.fn.expand('$CONFIG') .. '/nvim')<CR>"),
       button("c", " Config Settings", ":lua SmartCD(vim.fn.expand('$CONFIG'))<CR>"),
       button("p", " Previous Folder", ":lua TogglePWD()<CR>"),
-      -- button("h", " Terminal Settings", ":e $CONFIG/kitty/kitty.conf<CR>"),
-      -- button("q", "󰅚 Exit", "<cmd>qa<CR>"),
+      button("h", " Terminal Settings", ":e $CONFIG/ghostty/config<CR>"),
     },
     opts = {
       spacing = 1,
@@ -215,7 +217,6 @@ require("alpha").setup {
       local autocmd = vim.api.nvim_create_autocmd
       local group_name = augroup("alpha_settings", { clear = true })
       autocmd("User", {
-        pattern = "*",
         group = group_name,
         callback = function()
           local stats = require("lazy").stats()

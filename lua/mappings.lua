@@ -65,13 +65,15 @@ for i = 1, 9, 1 do
 end
 
 -- NvimTree
--- map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Focus NvimTree" })
-map("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle NvimTree" })
--- Neo-tree
--- map("n", "<leader>e", "<cmd>Neotree<CR>", { desc = "Focus NvimTree" })
+map("n", "<leader>e", "<cmd>NvimTreeFocus<CR>", { desc = "Focus NvimTree" })
+
+-- Tsugit
+map("n", "<leader><leader>lg", function()
+  require("tsugit").toggle()
+end, { silent = true, desc = "Toggle Lazygit" })
 
 -- Telescope
-map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Live grep" })
+-- map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Live grep" })
 -- map("n", "<leader>fw", function()
 --   require("telescope.builtin").live_grep {
 --     additional_args = function()
@@ -79,23 +81,43 @@ map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "Telescope Live 
 --     end,
 --   }
 -- end, { desc = "Telescope Live grep" })
-map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope Find buffers" })
-map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Telescope Help page" })
-map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope Find oldfiles" })
-map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Telescope Find in current buffer" })
-map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "Telescope Git commits" })
-map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Telescope Git status" })
-map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "Telescope Pick hidden term" })
+-- map("n", "<leader>fb", "<cmd>Telescope buffers<CR>", { desc = "Telescope Find buffers" })
+-- map("n", "<leader>fh", "<cmd>Telescope help_tags<CR>", { desc = "Telescope Help page" })
+-- map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "Telescope Find oldfiles" })
+-- map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "Telescope Find in current buffer" })
+-- map("n", "<leader>cm", "<cmd>Telescope git_commits<CR>", { desc = "Telescope Git commits" })
+-- map("n", "<leader>gt", "<cmd>Telescope git_status<CR>", { desc = "Telescope Git status" })
+-- map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "Telescope Pick hidden term" })
 -- map("n", "<leader>th", "<cmd>Telescope themes<CR>", { desc = "Telescope Nvchad themes" })
-map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
-map("n", "<leader>gr", "<cmd>Telescope lsp_references<cr>", { desc = "Telescope Find references" })
-map(
-  "n",
-  "<leader>fa",
-  "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-  { desc = "Telescope Find all files" }
-)
-map("n", "<leader>da", "<cmd>Telescope diagnostics<CR>", { desc = "Telescope Find all files" })
+-- map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Telescope Find files" })
+-- map("n", "<leader>gr", "<cmd>Telescope lsp_references<cr>", { desc = "Telescope Find references" })
+-- map(
+--   "n",
+--   "<leader>fa",
+--   "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
+--   { desc = "Telescope Find all files" }
+-- )
+-- map("n", "<leader>da", "<cmd>Telescope diagnostics<CR>", { desc = "Telescope diagnostics" })
+
+-- Fzf-lua
+map("n", "<leader>fs", function()
+  require("fzf-lua").resume()
+end, { desc = "Fzf resume" })
+map("n", "<leader>ff", function()
+  require("fzf-lua").files()
+end, { desc = "Fzf files" })
+map("n", "<leader>fo", function()
+  require("fzf-lua").oldfiles()
+end, { desc = "Fzf old files" })
+map("n", "<leader>fw", function()
+  require("fzf-lua").live_grep()
+end, { desc = "Fzf live grep" })
+map("n", "<leader>fb", function()
+  require("fzf-lua").buffers()
+end, { desc = "Fzf buffers" })
+map("n", "<leader>fr", function()
+  require("fzf-lua").lsp_references()
+end, { desc = "Fzf LSP references" })
 
 -- Terminal
 map("t", "<C-x>", "<C-\\><C-N>", { desc = "Terminal Escape terminal mode" })
@@ -171,17 +193,17 @@ map("n", "<leader>ca", function()
   vim.lsp.buf.code_action()
 end, { desc = "LSP Code Action" })
 
-local cmp = require "cmp"
-local cmp_enabled = true
-
-map("n", "<leader>cp", function()
-  cmp_enabled = not cmp_enabled
-  cmp.setup {
-    enabled = cmp_enabled,
-  }
-
-  vim.notify("CMP enabled: " .. tostring(cmp_enabled), vim.log.levels.INFO)
-end, { desc = "Toggle nvim-cmp completion" })
+-- local cmp = require "cmp"
+-- local cmp_enabled = true
+--
+-- map("n", "<leader>cp", function()
+--   cmp_enabled = not cmp_enabled
+--   cmp.setup {
+--     enabled = cmp_enabled,
+--   }
+--
+--   vim.notify("CMP enabled: " .. tostring(cmp_enabled), vim.log.levels.INFO)
+-- end, { desc = "Toggle nvim-cmp completion" })
 
 -- LSP Lines
 map("n", "<leader>ll", function()

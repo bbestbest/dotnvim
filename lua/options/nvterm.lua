@@ -1,3 +1,5 @@
+local M = require('options.variables')
+
 return {
   terminals = {
     shell = vim.o.shell,
@@ -8,8 +10,8 @@ return {
         relative = "editor",
         row = 0.1,
         col = 0.1,
-        -- width = WIDTH_RATIO,
-        -- height = HEIGHT_RATIO,
+        width = M.WIDTH_RATIO,
+        height = M.HEIGHT_RATIO,
       },
       horizontal = { location = "rightbelow", split_ratio = 0.3 },
       vertical = { location = "rightbelow", split_ratio = 0.5 },
